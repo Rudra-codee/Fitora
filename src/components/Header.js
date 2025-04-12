@@ -10,29 +10,21 @@ const HeaderContainer = styled.header`
   padding: 15px 0;
 `;
 
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 20px;
+const PageTitle = styled.h1`
+  font-size: 24px;
   font-weight: 600;
   color: #0f172a;
 `;
 
-const LogoIcon = styled.div`
-  background-color: #0f172a;
-  color: white;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
+const SubTitle = styled.p`
+  font-size: 14px;
+  color: #64748b;
+  margin-top: 5px;
 `;
 
 const SearchBar = styled.div`
   position: relative;
-  width: 40%;
+  width: 300px;
 `;
 
 const SearchInput = styled.input`
@@ -91,10 +83,10 @@ const UserAge = styled.div`
 const Header = () => {
   return (
     <HeaderContainer>
-      <Logo>
-        <LogoIcon>M</LogoIcon>
-        Magnus
-      </Logo>
+      <div>
+        <PageTitle>Health Dashboard</PageTitle>
+        <SubTitle>Welcome back, Emily! Here's your health summary.</SubTitle>
+      </div>
       <SearchBar>
         <SearchIcon>
           <FiSearch />
