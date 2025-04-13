@@ -1,70 +1,38 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import { useState } from 'react';
-import Header from './components/Header';
-import StepCount from './components/StepCount';
-import NutritionTracking from './components/NutritionTracking';
-import SleepRecovery from './components/SleepRecovery';
-import MentalHealth from './components/MentalHealth';
-import Achievements from './components/Achievements';
-import TrainingAppointment from './components/TrainingAppointment';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Sidebar from './components/Sidebar';
+import AIHealthTracker from './components/AIHealthTracker';
 import DailyProgressTracker from './components/DailyProgressTracker';
 import LocalDoctors from './components/LocalDoctors';
-import Sidebar from './components/Sidebar';
 import MedicineShop from './components/MedicineShop';
-import AIHealthTracker from './components/AIHealthTracker';
 import PlansPage from './components/PlansPage';
+import CalorieCounter from './components/CalorieCounter';
+import Header from './components/Header';
+import MentalHealth from './components/MentalHealth';
+import SleepRecovery from './components/SleepRecovery';
+import NutritionTracking from './components/NutritionTracking';
+import TrainingAppointment from './components/TrainingAppointment';
+import Achievements from './components/Achievements';
+import HelpSupport from './components/HelpSupport';
+import HealthRecords from './components/HealthRecords';
+import Login from './components/Login';
 
-const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f1f5f9;
-    color: #0f172a;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  :root {
-    --primary: #0ea5e9;
-    --primary-dark: #0284c7;
-    --secondary: #8b5cf6;
-    --success: #22c55e;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --dark: #0f172a;
-    --gray: #64748b;
-    --light: #f8fafc;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  }
-`;
-
-const AppLayout = styled.div`
+const AppContainer = styled.div`
   display: flex;
-  min-height: 100vh;
-  background: var(--light);
+  height: 100vh;
+  background-color: #f8fafc;
 `;
 
 const MainContent = styled.div`
   flex: 1;
+  padding: 2rem;
   margin-left: 280px;
-  min-height: 100vh;
-  background: var(--light);
-  position: relative;
+  overflow-y: auto;
 `;
 
 const Dashboard = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const DashboardGrid = styled.div`
@@ -106,19 +74,10 @@ const DashboardGrid = styled.div`
 
 const Card = styled.div`
   background: white;
-  border-radius: 24px;
-  box-shadow: var(--card-shadow);
-  transition: all 0.3s ease;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 24px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  height: 100%;
-  display: flex;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--card-shadow-hover);
-  }
 `;
 
 const MentalHealthCard = styled(Card)`
@@ -153,31 +112,19 @@ const AchievementsCard = styled(Card)`
   grid-area: goals;
   background: linear-gradient(135deg, #EC4899 0%, #BE185D 100%);
   min-height: 200px;
-  display: flex;
-`;
-
-const FullScreenComponent = styled.div`
-  position: fixed;
-  top: 0;
-  left: 280px;
-  right: 0;
-  bottom: 0;
-  background-color: var(--light);
-  z-index: 50;
-  padding: 2rem;
-  overflow-y: auto;
-
-  @media (max-width: 768px) {
-    left: 0;
-    padding: 1rem;
-  }
 `;
 
 function App() {
   const [activeComponent, setActiveComponent] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleComponentSelect = (component) => {
-    setActiveComponent(component);
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setActiveComponent(null);
   };
 
   const renderComponent = () => {
@@ -192,10 +139,16 @@ function App() {
         return <MedicineShop />;
       case 'plans':
         return <PlansPage />;
+      case 'diet-plan':
+        return <CalorieCounter />;
+      case 'help-support':
+        return <HelpSupport />;
+      case 'health-records':
+        return <HealthRecords />;
       default:
         return (
           <Dashboard>
-            <Header />
+            <Header onLogout={handleLogout} />
             <DashboardGrid>
               <MentalHealthCard>
                 <MentalHealth />
@@ -218,22 +171,20 @@ function App() {
     }
   };
 
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
+
   return (
-    <>
-      <GlobalStyle />
-      <AppLayout>
-        <Sidebar onComponentSelect={handleComponentSelect} activeComponent={activeComponent} />
-        <MainContent>
-          {activeComponent && activeComponent !== 'dashboard' ? (
-            <FullScreenComponent>
-              {renderComponent()}
-            </FullScreenComponent>
-          ) : (
-            renderComponent()
-          )}
-        </MainContent>
-      </AppLayout>
-    </>
+    <AppContainer>
+      <Sidebar 
+        onComponentSelect={setActiveComponent} 
+        activeComponent={activeComponent} 
+      />
+      <MainContent>
+        {renderComponent()}
+      </MainContent>
+    </AppContainer>
   );
 }
 

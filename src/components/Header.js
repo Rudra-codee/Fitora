@@ -1,412 +1,339 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { FiBell, FiSearch, FiCalendar, FiPlus, FiTrendingUp, FiSettings, FiHelpCircle, FiLogOut } from 'react-icons/fi';
+import { FiBell, FiSearch, FiUser, FiSettings, FiLogOut, FiChevronDown, FiHeart, FiActivity, FiSun, FiMoon } from 'react-icons/fi';
 
 const HeaderContainer = styled.header`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding: 20px 24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  justify-content: space-between;
+  padding: 1rem 0;
 `;
 
 const LeftSection = styled.div`
-  flex: 1;
-`;
-
-const PageTitle = styled.h1`
-  font-size: 28px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  letter-spacing: -0.5px;
-`;
-
-const SubTitle = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--gray);
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-`;
-
-const DateDisplay = styled.span`
-  font-size: 14px;
-  color: var(--gray);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-`;
-
-const QuickActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 24px;
-`;
-
-const ActionButton = styled.button`
-  padding: 8px 16px;
-  border-radius: 12px;
-  border: none;
-  background: ${props => props.primary ? 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)' : 'white'};
-  color: ${props => props.primary ? 'white' : '#6B7280'};
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: ${props => props.primary ? '0 4px 12px rgba(59, 130, 246, 0.25)' : '0 2px 6px rgba(0, 0, 0, 0.05)'};
-  border: ${props => props.primary ? 'none' : '1px solid #E5E7EB'};
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: ${props => props.primary ? '0 6px 16px rgba(59, 130, 246, 0.3)' : '0 4px 12px rgba(0, 0, 0, 0.1)'};
-    background: ${props => props.primary ? 'linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)' : '#F9FAFB'};
-  }
-
-  svg {
-    width: 16px;
-    height: 16px;
-  }
-`;
-
-const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
 `;
 
+const Title = styled.h1`
+  font-size: 24px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+`;
+
 const SearchBar = styled.div`
   position: relative;
   width: 300px;
-
-  @media (max-width: 1024px) {
-    width: 250px;
-  }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
-  padding: 12px 16px;
-  padding-left: 44px;
-  border-radius: 16px;
-  border: 2px solid #E5E7EB;
-  background-color: #F9FAFB;
+  padding: 10px 16px;
+  padding-left: 40px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
   font-size: 14px;
-  transition: all 0.3s ease;
+  outline: none;
+  transition: all 0.2s;
 
   &:focus {
-    outline: none;
-    border-color: #3B82F6;
-    background-color: white;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    width: 350px;
-  }
-
-  &::placeholder {
-    color: #9CA3AF;
+    border-color: #0ea5e9;
   }
 `;
 
 const SearchIcon = styled.div`
   position: absolute;
-  left: 16px;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: #94a3b8;
 `;
 
-const SearchResults = styled.div`
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  padding: 8px;
-  display: ${props => props.show ? 'block' : 'none'};
-`;
-
-const SearchResultItem = styled.div`
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--dark);
-
-  &:hover {
-    background-color: #f8fafc;
-  }
-
-  svg {
-    color: var(--primary);
-  }
-`;
-
-const NotificationButton = styled.button`
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  border: none;
-  background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
-  color: #6B7280;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid #E5E7EB;
-
-  &:hover {
-    background: white;
-    color: #3B82F6;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  &::after {
-    content: '${props => props.count || ''}';
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    min-width: 22px;
-    height: 22px;
-    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-    border-radius: 11px;
-    color: white;
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid white;
-    padding: 0 6px;
-    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
-  }
-`;
-
-const UserProfile = styled.div`
+const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 8px;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+`;
+
+const NotificationSection = styled.div`
   position: relative;
-  background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
-  border: 1px solid #E5E7EB;
-
-  &:hover {
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-1px);
-  }
 `;
 
-const ProfileInfo = styled.div`
-  text-align: right;
-`;
+const NotificationBadge = styled.div`
+  position: relative;
+  cursor: pointer;
 
-const UserName = styled.div`
-  font-weight: 700;
-  font-size: 15px;
-  color: #1F2937;
-  margin-bottom: 2px;
-`;
-
-const UserRole = styled.div`
-  font-size: 13px;
-  color: #6B7280;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  span {
-    display: inline-block;
+  &::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
     width: 8px;
     height: 8px;
+    background: #ef4444;
     border-radius: 50%;
-    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    border: 2px solid white;
   }
 `;
 
-const ProfileImage = styled.div`
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+const NotificationDropdown = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  min-width: 320px;
+  z-index: 100;
   overflow: hidden;
-  border: 3px solid white;
-  box-shadow: 0 0 0 2px #E5E7EB;
-  transition: all 0.3s ease;
+  opacity: ${props => props.isOpen ? 1 : 0};
+  visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
+  transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  transition: all 0.2s;
+`;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+const NotificationHeader = styled.div`
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+`;
+
+const NotificationTitle = styled.h3`
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+`;
+
+const NotificationList = styled.div`
+  max-height: 400px;
+  overflow-y: auto;
+`;
+
+const NotificationItem = styled.div`
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f8fafc;
   }
 
-  ${UserProfile}:hover & {
-    box-shadow: 0 0 0 2px #3B82F6;
+  &:last-child {
+    border-bottom: none;
   }
+`;
+
+const NotificationIcon = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: ${props => props.bg};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+`;
+
+const NotificationContent = styled.div`
+  flex: 1;
+`;
+
+const NotificationMessage = styled.div`
+  font-size: 14px;
+  color: #0f172a;
+  margin-bottom: 4px;
+`;
+
+const NotificationTime = styled.div`
+  font-size: 12px;
+  color: #64748b;
+`;
+
+const ProfileSection = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f1f5f9;
+  }
+`;
+
+const ProfileAvatar = styled.div`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+`;
+
+const ProfileName = styled.div`
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
 `;
 
 const ProfileDropdown = styled.div`
   position: absolute;
-  top: calc(100% + 12px);
+  top: 100%;
   right: 0;
+  margin-top: 8px;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-  border: 1px solid #E5E7EB;
-  padding: 8px;
-  width: 220px;
-  display: ${props => props.show ? 'block' : 'none'};
-  animation: dropdownFade 0.2s ease;
-
-  @keyframes dropdownFade {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  min-width: 200px;
+  z-index: 100;
+  overflow: hidden;
+  opacity: ${props => props.isOpen ? 1 : 0};
+  visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
+  transform: ${props => props.isOpen ? 'translateY(0)' : 'translateY(-10px)'};
+  transition: all 0.2s;
 `;
 
 const DropdownItem = styled.div`
-  padding: 10px 14px;
-  border-radius: 12px;
-  cursor: pointer;
+  padding: 12px 16px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: ${props => props.danger ? '#EF4444' : '#1F2937'};
-  font-weight: 500;
-  transition: all 0.2s ease;
+  gap: 12px;
+  color: ${props => props.danger ? '#ef4444' : '#64748b'};
+  transition: all 0.2s;
 
   &:hover {
-    background: ${props => props.danger ? '#FEF2F2' : '#F9FAFB'};
-    transform: translateX(4px);
-  }
-
-  svg {
-    width: 18px;
-    height: 18px;
-    color: ${props => props.danger ? '#EF4444' : '#6B7280'};
+    background: #f8fafc;
+    color: ${props => props.danger ? '#dc2626' : '#0f172a'};
   }
 `;
 
-const Header = () => {
-  const [showSearch, setShowSearch] = useState(false);
-  const [showProfile, setShowProfile] = useState(false);
-  const [notifications] = useState(3);
-  const today = new Date();
-  const formattedDate = new Intl.DateTimeFormat('en-US', { 
-    weekday: 'long', 
-    month: 'long', 
-    day: 'numeric' 
-  }).format(today);
+const Header = ({ onLogout }) => {
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const profileRef = useRef(null);
+  const notificationsRef = useRef(null);
+
+  const notifications = [
+    {
+      id: 1,
+      icon: <FiHeart size={16} />,
+      bg: '#ec4899',
+      message: 'Your heart rate was higher than usual during your last workout',
+      time: '2 hours ago'
+    },
+    {
+      id: 2,
+      icon: <FiMoon size={16} />,
+      bg: '#8b5cf6',
+      message: 'Great job! You achieved your sleep goal last night',
+      time: '5 hours ago'
+    },
+    {
+      id: 3,
+      icon: <FiActivity size={16} />,
+      bg: '#10b981',
+      message: 'Time for your daily meditation session',
+      time: '1 hour ago'
+    },
+    {
+      id: 4,
+      icon: <FiSun size={16} />,
+      bg: '#f59e0b',
+      message: 'Remember to drink water - stay hydrated!',
+      time: '30 minutes ago'
+    }
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
+        setIsNotificationsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    setIsProfileOpen(false);
+    onLogout();
+  };
 
   return (
     <HeaderContainer>
       <LeftSection>
-        <PageTitle>
-          Health Dashboard
-        </PageTitle>
-        <SubTitle>
-          <DateDisplay>
-            <FiCalendar />
-            {formattedDate}
-          </DateDisplay>
-          <QuickActions>
-            <ActionButton primary>
-              <FiPlus /> Add Activity
-            </ActionButton>
-            <ActionButton>
-              <FiTrendingUp /> View Reports
-            </ActionButton>
-          </QuickActions>
-        </SubTitle>
+        <Title>Dashboard</Title>
+        <SearchBar>
+          <SearchIcon>
+            <FiSearch size={16} />
+          </SearchIcon>
+          <SearchInput placeholder="Search..." />
+        </SearchBar>
       </LeftSection>
 
       <RightSection>
-        <SearchBar>
-          <SearchIcon>
-            <FiSearch />
-          </SearchIcon>
-          <SearchInput 
-            placeholder="Search anything..." 
-            onFocus={() => setShowSearch(true)}
-            onBlur={() => setTimeout(() => setShowSearch(false), 200)}
-          />
-          <SearchResults show={showSearch}>
-            <SearchResultItem>
-              <FiTrendingUp /> View today's activity
-            </SearchResultItem>
-            <SearchResultItem>
-              <FiCalendar /> Schedule workout
-            </SearchResultItem>
-            <SearchResultItem>
-              <FiSearch /> Advanced search...
-            </SearchResultItem>
-          </SearchResults>
-        </SearchBar>
-
-        <NotificationButton count={notifications}>
-          <FiBell size={20} />
-        </NotificationButton>
-
-        <UserProfile onClick={() => setShowProfile(!showProfile)}>
-          <ProfileInfo>
-            <UserName>Rudraksh</UserName>
-            <UserRole><span></span>Premium Member</UserRole>
-          </ProfileInfo>
-          <ProfileImage>
-            <img 
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop" 
-              alt="Profile" 
-            />
-          </ProfileImage>
-          <ProfileDropdown show={showProfile}>
+        <NotificationSection ref={notificationsRef}>
+          <NotificationBadge onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}>
+            <FiBell size={20} color="#64748b" />
+          </NotificationBadge>
+          <NotificationDropdown isOpen={isNotificationsOpen}>
+            <NotificationHeader>
+              <NotificationTitle>Health Updates</NotificationTitle>
+            </NotificationHeader>
+            <NotificationList>
+              {notifications.map(notification => (
+                <NotificationItem key={notification.id}>
+                  <NotificationIcon bg={notification.bg}>
+                    {notification.icon}
+                  </NotificationIcon>
+                  <NotificationContent>
+                    <NotificationMessage>{notification.message}</NotificationMessage>
+                    <NotificationTime>{notification.time}</NotificationTime>
+                  </NotificationContent>
+                </NotificationItem>
+              ))}
+            </NotificationList>
+          </NotificationDropdown>
+        </NotificationSection>
+        <ProfileSection ref={profileRef} onClick={() => setIsProfileOpen(!isProfileOpen)}>
+          <ProfileAvatar>
+            <FiUser size={16} />
+          </ProfileAvatar>
+          <ProfileName>Rudraksh</ProfileName>
+          <FiChevronDown size={16} color="#64748b" />
+          <ProfileDropdown isOpen={isProfileOpen}>
             <DropdownItem>
-              <FiSettings /> Settings
+              <FiUser size={16} />
+              My Profile
             </DropdownItem>
             <DropdownItem>
-              <FiHelpCircle /> Help & Support
+              <FiSettings size={16} />
+              Settings
             </DropdownItem>
-            <DropdownItem danger>
-              <FiLogOut /> Sign Out
+            <DropdownItem danger onClick={handleLogout}>
+              <FiLogOut size={16} />
+              Sign Out
             </DropdownItem>
           </ProfileDropdown>
-        </UserProfile>
+        </ProfileSection>
       </RightSection>
     </HeaderContainer>
   );

@@ -2,20 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { 
   FiHome, 
-  FiUser, 
   FiCalendar, 
   FiHeart, 
-  FiBell, 
   FiActivity,
   FiGrid,
   FiClipboard,
   FiLifeBuoy,
   FiShoppingBag,
-  FiAward
+  FiAward,
+  FiUser,
+  FiHelpCircle
 } from 'react-icons/fi';
 import { RiMentalHealthFill } from 'react-icons/ri';
 import { GiFruitBowl } from 'react-icons/gi';
-import { FaHome, FaCalendarAlt, FaUserMd, FaMedkit } from 'react-icons/fa';
 
 const SidebarContainer = styled.div`
   background-color: white;
@@ -110,21 +109,6 @@ const IconContainer = styled.div`
   color: ${props => props.active ? '#0ea5e9' : 'inherit'};
 `;
 
-const Badge = styled.div`
-  background-color: #ef4444;
-  color: white;
-  font-size: 10px;
-  font-weight: 600;
-  height: 18px;
-  min-width: 18px;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  padding: 0 6px;
-`;
-
 const menuItems = [
   {
     id: null,
@@ -140,6 +124,11 @@ const menuItems = [
     id: 'daily-progress',
     label: 'Daily Progress Tracker',
     icon: <FiCalendar size={18} />
+  },
+  {
+    id: 'help-support',
+    label: 'Help & Support',
+    icon: <FiHelpCircle size={18} />
   }
 ];
 
@@ -161,12 +150,30 @@ const healthServicesItems = [
   }
 ];
 
+const wellnessItems = [
+  {
+    id: 'diet-plan',
+    label: 'Personal Diet Plan',
+    icon: <GiFruitBowl size={18} />
+  },
+  {
+    id: 'health-records',
+    label: 'Health Records',
+    icon: <FiClipboard size={18} />
+  },
+  {
+    id: 'help-support',
+    label: 'Help & Support',
+    icon: <FiLifeBuoy size={18} />
+  }
+];
+
 const Sidebar = ({ onComponentSelect, activeComponent }) => {
   return (
     <SidebarContainer>
       <Logo>
-        <LogoIcon>M</LogoIcon>
-        <LogoText>Magnus Health</LogoText>
+        <LogoIcon>F</LogoIcon>
+        <LogoText>Fitora</LogoText>
       </Logo>
 
       <NavSection>
@@ -203,39 +210,21 @@ const Sidebar = ({ onComponentSelect, activeComponent }) => {
 
       <NavSection>
         <SectionTitle>Wellness</SectionTitle>
-        <NavItem>
-          <IconContainer>
-            <RiMentalHealthFill size={18} />
-          </IconContainer>
-          Mental Health
-        </NavItem>
-        <NavItem>
-          <IconContainer>
-            <FiActivity size={18} />
-          </IconContainer>
-          Yoga & Gym Plans
-        </NavItem>
-        <NavItem>
-          <IconContainer>
-            <GiFruitBowl size={18} />
-          </IconContainer>
-          Personal Diet Plan
-        </NavItem>
-        <NavItem>
-          <IconContainer>
-            <FiClipboard size={18} />
-          </IconContainer>
-          Health Records
-        </NavItem>
-        <NavItem>
-          <IconContainer>
-            <FiLifeBuoy size={18} />
-          </IconContainer>
-          Help & Support
-        </NavItem>
+        {wellnessItems.map(item => (
+          <NavItem 
+            key={item.id}
+            active={activeComponent === item.id}
+            onClick={() => onComponentSelect(item.id)}
+          >
+            <IconContainer active={activeComponent === item.id}>
+              {item.icon}
+            </IconContainer>
+            {item.label}
+          </NavItem>
+        ))}
       </NavSection>
     </SidebarContainer>
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

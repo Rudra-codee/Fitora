@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
-import { FiSend, FiPlus, FiMic } from 'react-icons/fi';
+import { FiSend } from 'react-icons/fi';
 import { getAIResponse } from '../services/aiService';
 
 const Container = styled.div`

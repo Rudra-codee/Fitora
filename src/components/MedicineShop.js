@@ -287,7 +287,7 @@ const MedicineShop = () => {
     {
       id: 1,
       name: 'Shelcal 500mg Strip Of 15 Tablets',
-      image: '/images/shelcal.jpg',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/341517/shelcal_500mg_strip_of_15_tablets_0.jpg',
       mrp: 158.69,
       price: 123.71,
       discount: '22%'
@@ -295,7 +295,7 @@ const MedicineShop = () => {
     {
       id: 2,
       name: 'Abzorb Total Skin Relief Dusting Powder',
-      image: '/images/abzorb.jpg',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/858544/abzorb_dusting_powder_100gm_0_1.jpg',
       mrp: 160.00,
       price: 136.00,
       discount: '15%'
@@ -303,7 +303,7 @@ const MedicineShop = () => {
     {
       id: 3,
       name: 'Liveasy Wellness Calcium Magnesium',
-      image: '/images/liveasy.jpg',
+      image: 'https://onemg.gumlet.io/l_watermark_346,w_120,h_120/a_ignore,w_120,h_120,c_fit,q_auto,f_auto/7e427f3e6e1f4cce97b2-1.png',
       mrp: 599.00,
       price: 251.58,
       discount: '58%'
@@ -311,7 +311,7 @@ const MedicineShop = () => {
     {
       id: 4,
       name: 'Evion 400mg Strip Of 20 Capsule',
-      image: '/images/evion.jpg',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/341450/evion_400mg_capsule_20s_0.jpg',
       mrp: 86.87,
       price: 69.50,
       discount: '20%'
@@ -319,7 +319,7 @@ const MedicineShop = () => {
     {
       id: 5,
       name: 'Revital H Men Multivitamin',
-      image: '/images/revital.jpg',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/408873/revital_h_capsule_30_s_0.jpg',
       mrp: 600.00,
       price: 517.89,
       discount: '39%'
@@ -327,10 +327,58 @@ const MedicineShop = () => {
     {
       id: 6,
       name: 'Dr. Morepen Gluco One BG 03 Glucometer Test Strips',
-      image: '/images/glucometer.jpg',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/384296/dr_morepen_gluco_one_bg_03_glucometer_test_strips_box_of_50_0.jpg',
       mrp: 849.00,
       price: 517.89,
       discount: '39%'
+    },
+    {
+      id: 7,
+      name: 'Dolo 650mg Tablet',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/341452/dolo_650mg_tablet_15_s_0.jpg',
+      mrp: 30.00,
+      price: 26.40,
+      discount: '12%'
+    },
+    {
+      id: 8,
+      name: 'Crocin Advance 500mg Tablet',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/412820/crocin_advance_500mg_tablet_20s_0_0.jpg',
+      mrp: 50.00,
+      price: 44.00,
+      discount: '12%'
+    },
+    {
+      id: 9,
+      name: 'Zincovit Tablet',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/406561/zincovit_tablet_15s_53987_0_1.jpg',
+      mrp: 105.00,
+      price: 89.25,
+      discount: '15%'
+    },
+    {
+      id: 10,
+      name: 'Becosules Capsule',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/341436/becosules_capsule_20s_0.jpg',
+      mrp: 45.37,
+      price: 38.56,
+      discount: '15%'
+    },
+    {
+      id: 11,
+      name: 'Supradyn Daily Multivitamin Tablets',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/858403/supradyn_daily_multivitamin_tablets_15s_0.jpg',
+      mrp: 54.00,
+      price: 48.60,
+      discount: '10%'
+    },
+    {
+      id: 12,
+      name: 'Neurobion Forte Tablet',
+      image: 'https://www.netmeds.com/images/product-v1/600x600/341486/neurobion_forte_tablet_30_s_0.jpg',
+      mrp: 73.95,
+      price: 65.08,
+      discount: '12%'
     }
   ];
 
