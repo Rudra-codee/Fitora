@@ -137,11 +137,6 @@ const menuItems = [
     icon: <FiGrid size={18} />
   },
   {
-    id: 'health-portfolio',
-    label: 'Personal Health Portfolio',
-    icon: <FiUser size={18} />
-  },
-  {
     id: 'daily-progress',
     label: 'Daily Progress Tracker',
     icon: <FiCalendar size={18} />

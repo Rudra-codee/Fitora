@@ -11,17 +11,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: white;
+  border-radius: 12px;
 `;
 
-const Card = styled.div`
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  grid-area: nutrition;
-  display: flex;
-  flex-direction: column;
-`;
 
 const Title = styled.h2`
   font-size: 20px;
@@ -31,8 +24,8 @@ const Title = styled.h2`
 `;
 
 const MetricsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 25px;
   margin-bottom: 30px;
 `;
@@ -164,7 +157,7 @@ const NutritionTracking = () => {
       
       <MetricsContainer>
         <MetricItem>
-          <IconContainer bgColor="#10b981">
+          <IconContainer bgColor="#3b82f6">
             <FiActivity />
           </IconContainer>
           <MetricContent>
@@ -172,12 +165,12 @@ const NutritionTracking = () => {
               <MetricLabel>Calorie intake</MetricLabel>
               <MetricValue>2,000</MetricValue>
             </MetricHeader>
-            <ProgressBar progress={80} progressColor="#10b981" />
+            <ProgressBar progress={80} progressColor="#3b82f6" />
           </MetricContent>
         </MetricItem>
         
         <MetricItem>
-          <IconContainer bgColor="#8b5cf6">
+          <IconContainer bgColor="#14b8a6">
             <FiTarget />
           </IconContainer>
           <MetricContent>
@@ -185,12 +178,12 @@ const NutritionTracking = () => {
               <MetricLabel>Vitamins/minerals</MetricLabel>
               <MetricValue>35%</MetricValue>
             </MetricHeader>
-            <ProgressBar progress={35} progressColor="#8b5cf6" />
+            <ProgressBar progress={35} progressColor="#14b8a6" />
           </MetricContent>
         </MetricItem>
         
         <MetricItem>
-          <IconContainer bgColor="#0ea5e9">
+          <IconContainer bgColor="#10b981">
             <FiDroplet />
           </IconContainer>
           <MetricContent>
@@ -198,7 +191,7 @@ const NutritionTracking = () => {
               <MetricLabel>Hydration Levels</MetricLabel>
               <MetricValue>2.5L<Unit>/day</Unit></MetricValue>
             </MetricHeader>
-            <ProgressBar progress={65} progressColor="#0ea5e9" />
+            <ProgressBar progress={65} progressColor="#10b981" />
           </MetricContent>
         </MetricItem>
       </MetricsContainer>

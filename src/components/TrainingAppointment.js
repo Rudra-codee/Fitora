@@ -1,48 +1,87 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FiClock } from 'react-icons/fi';
+import { FiClock, FiCalendar, FiVideo, FiMessageCircle } from 'react-icons/fi';
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 24px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  height: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 
-const Card = styled.div`
-  background-color: white;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  grid-area: training;
-  display: flex;
-  flex-direction: column;
+const Header = styled.div`
+  margin-bottom: 28px;
 `;
 
 const Title = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
   color: #0f172a;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    color: #0f172a;
+  }
 `;
 
 const TrainerSection = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 25px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const TrainerAvatar = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   overflow: hidden;
-  margin-right: 15px;
+  margin-right: 16px;
+  border: 3px solid #e2e8f0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #4ADE80;
+    border-radius: 50%;
+    bottom: 2px;
+    right: 2px;
+  border: 2px solid white;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 const TrainerInfo = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
 `;
 
 const TrainerName = styled.div`
@@ -54,33 +93,45 @@ const TrainerName = styled.div`
 const TrainerRole = styled.div`
   font-size: 14px;
   color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;
 
 const ScheduleSection = styled.div`
-  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
 `;
 
 const WorkoutCard = styled.div`
   display: flex;
   align-items: center;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  background-color: ${props => props.active ? '#f8fafc' : 'transparent'};
-  border: 1px solid ${props => props.active ? '#e2e8f0' : 'transparent'};
+  padding: 16px;
+  border-radius: 16px;
+  background: ${props => props.active ? '#f1f5f9' : '#f8fafc'};
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateX(4px);
+    background: white;
+  }
 `;
 
 const WorkoutIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: ${props => props.bgColor || '#e2e8f0'};
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: ${props => props.active ? '#e2e8f0' : '#f1f5f9'};
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 15px;
-  font-size: 18px;
+  margin-right: 16px;
   color: white;
+  font-size: 20px;
 `;
 
 const WorkoutInfo = styled.div`
@@ -89,33 +140,68 @@ const WorkoutInfo = styled.div`
 
 const WorkoutName = styled.div`
   font-weight: 600;
-  font-size: 15px;
+  font-size: 16px;
   color: #0f172a;
+  margin-bottom: 4px;
 `;
 
 const WorkoutTime = styled.div`
-  font-size: 13px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   color: #64748b;
-`;
-
-const ClockIcon = styled(FiClock)`
-  margin-right: 5px;
-  font-size: 12px;
+  gap: 6px;
 `;
 
 const MessageSection = styled.div`
   margin-top: auto;
-  border-top: 1px solid #e2e8f0;
-  padding-top: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+`;
+
+const MessageHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0f172a;
+  font-weight: 600;
+  margin-bottom: 12px;
 `;
 
 const Message = styled.p`
   font-size: 14px;
   color: #64748b;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const ActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  color: #0f172a;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #e2e8f0;
+    transform: translateY(-1px);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const YogaIcon = () => (
@@ -141,52 +227,69 @@ const RunningIcon = () => (
 const TrainingAppointment = () => {
   return (
     <Container>
-      <Title>Weekly training appointment</Title>
+      <Header>
+        <Title>
+          <FiCalendar /> Training Schedule
+        </Title>
+      </Header>
       
       <TrainerSection>
         <TrainerAvatar>
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Trainer" style={{ width: '100%', height: '100%' }} />
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Trainer" />
         </TrainerAvatar>
         <TrainerInfo>
           <TrainerName>John Smith</TrainerName>
-          <TrainerRole>Your Trainer</TrainerRole>
+          <TrainerRole>
+            <span>Personal Trainer</span>
+            <span>•</span>
+            <span>5 years exp.</span>
+          </TrainerRole>
         </TrainerInfo>
       </TrainerSection>
       
       <ScheduleSection>
         <WorkoutCard active={true}>
-          <WorkoutIcon bgColor="#8b5cf6">
+          <WorkoutIcon active={true}>
             <RunningIcon />
           </WorkoutIcon>
           <WorkoutInfo>
-            <WorkoutName>Running</WorkoutName>
+            <WorkoutName>High Intensity Running</WorkoutName>
             <WorkoutTime>
-              <ClockIcon />
-              13:00/pm
+              <FiClock />
+              Today at 13:00
             </WorkoutTime>
           </WorkoutInfo>
+          <ActionButton>
+            <FiVideo /> Join
+          </ActionButton>
         </WorkoutCard>
         
         <WorkoutCard active={false}>
-          <WorkoutIcon bgColor="#0ea5e9">
+          <WorkoutIcon active={false}>
             <YogaIcon />
           </WorkoutIcon>
           <WorkoutInfo>
-            <WorkoutName>Yoga</WorkoutName>
+            <WorkoutName>Morning Yoga Session</WorkoutName>
             <WorkoutTime>
-              <ClockIcon />
-              12:00/pm
+              <FiClock />
+              Tomorrow at 08:00
             </WorkoutTime>
           </WorkoutInfo>
+          <ActionButton>
+            <FiVideo /> Preview
+          </ActionButton>
         </WorkoutCard>
       </ScheduleSection>
       
       <MessageSection>
+        <MessageHeader>
+          <FiMessageCircle /> Trainer's Note
+        </MessageHeader>
         <Message>
-          I have put together a new training plan for you that will help you reach your goals even faster. I have taken your wishes and your current level of training into account.
+          I've customized a new training plan to accelerate your progress. This plan takes into account your recent performance and goals.
         </Message>
         <Message>
-          Also added video material for proper exercise
+          I've also included detailed video guides for proper form and technique. Let's crush these goals together! 💪
         </Message>
       </MessageSection>
     </Container>

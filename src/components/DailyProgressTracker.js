@@ -7,6 +7,7 @@ const Container = styled.div`
   background: white;
   border-radius: 15px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  color: #0f172a;
 `;
 
 const Header = styled.div`

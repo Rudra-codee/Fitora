@@ -26,94 +26,134 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f8fafc;
+    background: #f1f5f9;
     color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root {
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --secondary: #8b5cf6;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --dark: #0f172a;
+    --gray: #64748b;
+    --light: #f8fafc;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
   }
 `;
 
 const AppLayout = styled.div`
   display: flex;
   min-height: 100vh;
+  background: var(--light);
 `;
 
 const MainContent = styled.div`
   flex: 1;
-  margin-left: 280px; /* Same as sidebar width */
+  margin-left: 280px;
+  min-height: 100vh;
+  background: var(--light);
+  position: relative;
 `;
 
 const Dashboard = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem;
 `;
 
 const DashboardGrid = styled.div`
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
+  gap: 20px;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto auto;
   grid-template-areas:
-    "mental mental step"
-    "training sleep nutrition"
-    "achievements achievements achievements";
+    "mental mental mental mental sleep sleep sleep nt nt nt nt nt"
+    "mental mental mental mental train train train train train goals goals goals";
   margin-top: 2rem;
 
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 1400px) {
     grid-template-areas:
-      "mental mental"
-      "step training"
-      "sleep nutrition"
-      "achievements achievements";
+      "mental mental mental mental sleep sleep sleep nt nt nt nt nt"
+      "train train train train train goals goals goals goals goals goals goals";
+  }
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-areas:
+      "mental mental mental mental sleep sleep sleep sleep"
+      "nt nt nt nt train train train train"
+      "goals goals goals goals goals goals goals goals";
+    gap: 16px;
   }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 16px;
     grid-template-areas:
       "mental"
-      "step"
-      "training"
       "sleep"
-      "nutrition"
-      "achievements";
+      "nt"
+      "train"
+      "goals";
   }
 `;
 
 const Card = styled.div`
   background: white;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
+  border-radius: 24px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
   overflow: hidden;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 100%;
+  display: flex;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transform: translateY(-4px);
+    box-shadow: var(--card-shadow-hover);
   }
 `;
 
 const MentalHealthCard = styled(Card)`
   grid-area: mental;
-`;
-
-const StepCountCard = styled(Card)`
-  grid-area: step;
-`;
-
-const TrainingCard = styled(Card)`
-  grid-area: training;
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+  min-height: 420px;
+  display: flex;
 `;
 
 const SleepCard = styled(Card)`
   grid-area: sleep;
+  background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
+  min-height: 200px;
+  display: flex;
 `;
 
 const NutritionCard = styled(Card)`
-  grid-area: nutrition;
+  grid-area: nt;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  min-height: 200px;
+  display: flex;
+`;
+
+const TrainingCard = styled(Card)`
+  grid-area: train;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  min-height: 200px;
+  display: flex;
 `;
 
 const AchievementsCard = styled(Card)`
-  grid-area: achievements;
+  grid-area: goals;
+  background: linear-gradient(135deg, #EC4899 0%, #BE185D 100%);
+  min-height: 200px;
+  display: flex;
 `;
 
 const FullScreenComponent = styled.div`
@@ -122,22 +162,25 @@ const FullScreenComponent = styled.div`
   left: 280px;
   right: 0;
   bottom: 0;
-  background-color: #f8fafc;
+  background-color: var(--light);
   z-index: 50;
   padding: 2rem;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    left: 0;
+    padding: 1rem;
+  }
 `;
 
 function App() {
   const [activeComponent, setActiveComponent] = useState(null);
 
   const handleComponentSelect = (component) => {
-    console.log('Selected component:', component);
     setActiveComponent(component);
   };
 
   const renderComponent = () => {
-    console.log('Rendering component:', activeComponent);
     switch (activeComponent) {
       case 'health-tracker':
         return <AIHealthTracker />;
@@ -148,7 +191,6 @@ function App() {
       case 'medicine-shop':
         return <MedicineShop />;
       case 'plans':
-        console.log('Rendering PlansPage component');
         return <PlansPage />;
       default:
         return (
@@ -158,18 +200,15 @@ function App() {
               <MentalHealthCard>
                 <MentalHealth />
               </MentalHealthCard>
-              <StepCountCard>
-                <StepCount />
-              </StepCountCard>
-              <TrainingCard>
-                <TrainingAppointment />
-              </TrainingCard>
               <SleepCard>
                 <SleepRecovery />
               </SleepCard>
               <NutritionCard>
                 <NutritionTracking />
               </NutritionCard>
+              <TrainingCard>
+                <TrainingAppointment />
+              </TrainingCard>
               <AchievementsCard>
                 <Achievements />
               </AchievementsCard>
