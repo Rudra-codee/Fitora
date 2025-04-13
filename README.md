@@ -1,57 +1,50 @@
-# Health Tracker Dashboard
+# Fitora - Health Tracker Dashboard
 
-A modern, responsive React dashboard for tracking health metrics like mental health, physical activity, nutrition, and sleep.
+A modern, feature-rich health tracking application built with React that helps users monitor their physical and mental well-being.
 
 ## Features
 
-- **Mental Health Monitoring**: Track stress levels, dopamine levels, and calm metrics
-- **Physical Activity**: Step counter with visual representation
-- **Sleep Analysis**: Deep sleep, restful sleep, and REM phase tracking
-- **Nutrition Insights**: Calorie intake, vitamins/minerals, and hydration tracking
-- **Training Schedule**: Workout appointments with your personal trainer
-- **Achievements & Goals**: Track your progress towards fitness goals
+- **Dashboard Overview**: Comprehensive view of your health metrics
+- **Mental Health Tracking**: Monitor your mental well-being with mood tracking and analytics
+- **Sleep & Recovery**: Track your sleep patterns and recovery metrics
+- **Medicine Shop**: Browse and purchase medicines with a modern e-commerce interface
+- **Local Doctors**: Find and connect with healthcare professionals in your area
+- **Training Appointments**: Schedule and manage your fitness training sessions
+- **Nutrition Tracking**: Monitor your diet and calorie intake
+- **Health Records**: Securely store and manage your medical records
 
-## Technology Stack
+## Tech Stack
 
 - React.js
-- Styled-Components for styling
-- Chart.js for data visualization
-- React Icons for UI icons
+- Styled Components
+- React Icons
+- Context API for state management
+- Modern UI/UX principles
 
 ## Getting Started
 
-1. Clone the repository
-2. Install dependencies with `npm install`
-3. Start the development server with `npm start`
-4. Open [http://localhost:3000](http://localhost:3000) to view it in your browser
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Rudra-codee/Fitora.git
+   ```
 
-## Project Structure
+2. Install dependencies:
+   ```bash
+   cd Fitora
+   npm install
+   ```
 
-```
-health-tracker-dashboard/
-├── public/
-├── src/
-│   ├── components/
-│   │   ├── Header.js
-│   │   ├── MentalHealth.js
-│   │   ├── StepCount.js
-│   │   ├── TrainingAppointment.js
-│   │   ├── SleepRecovery.js
-│   │   ├── NutritionTracking.js
-│   │   └── Achievements.js
-│   ├── App.js
-│   ├── index.js
-│   └── index.css
-└── package.json
-```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
 
-## Customization
+4. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-You can customize the dashboard by:
-- Modifying the color scheme in component styles
-- Updating the metrics to track different health data
-- Adding new components for additional health tracking features
+## Contributing
 
-## Screenshots
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-![Health Tracker Dashboard Screenshot](dashboard-screenshot.png)
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
